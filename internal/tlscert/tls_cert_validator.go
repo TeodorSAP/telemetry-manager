@@ -19,6 +19,9 @@ import (
 )
 
 var (
+	ErrMissingAll     = errors.New("no TLS configuration provided, missing certificate, private key, and CA")
+	ErrMissingCertKey = errors.New("missing certificate or/and private key, and CA was not provided")
+
 	ErrCertDecodeFailed = errors.New("failed to decode PEM block containing certificate")
 	ErrCertParseFailed  = errors.New("failed to parse certificate")
 
@@ -131,7 +134,25 @@ func (v *Validator) Validate(ctx context.Context, tls TLSBundle) error {
 	var parsedCAs []*x509.Certificate
 	if sanitizedCA != nil {
 		parsedCAs, err = parseCertificates(sanitizedCA, ErrCADecodeFailed, ErrCAParseFailed)
-		if err != nil {
+	}
+	if err != nil {
+		return err
+	}
+
+	// Validate certificate (if not missing)
+	if !missingCert && !missingKey {
+		err = validateCertificate(parsedCert, sanitizedCert, sanitizedKey, v.now())
+	}
+	if err != nil {
+		return err
+	}
+
+	// Validate CA(s) (if not missing)
+	if missingCA {
+		return nil
+	}
+	for _, ca := range parsedCAs {
+		if err := validateCA(ca, v.now()); err != nil {
 			return err
 		}
 	}
