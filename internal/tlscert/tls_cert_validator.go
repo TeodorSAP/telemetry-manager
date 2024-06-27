@@ -19,9 +19,6 @@ import (
 )
 
 var (
-	ErrMissingAll     = errors.New("no TLS configuration provided, missing certificate, private key, and CA")
-	ErrMissingCertKey = errors.New("missing certificate or/and private key, and CA was not provided")
-
 	ErrCertDecodeFailed = errors.New("failed to decode PEM block containing certificate")
 	ErrCertParseFailed  = errors.New("failed to parse certificate")
 
