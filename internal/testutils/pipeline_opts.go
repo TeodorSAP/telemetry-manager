@@ -96,7 +96,10 @@ func OTLPClientTLS(tls *telemetryv1alpha1.OtlpTLS) OTLPOutputOption {
 
 func OTLPClientTLSMissingAll() OTLPOutputOption {
 	return func(output *telemetryv1alpha1.OtlpOutput) {
-		output.TLS = &telemetryv1alpha1.OtlpTLS{}
+		output.TLS = &telemetryv1alpha1.OtlpTLS{
+			Insecure:           true,
+			InsecureSkipVerify: true,
+		}
 	}
 }
 
@@ -140,7 +143,10 @@ func HTTPClientTLS(tls telemetryv1alpha1.TLSConfig) HTTPOutputOption {
 
 func HTTPClientTLSMissingAll() HTTPOutputOption {
 	return func(output *telemetryv1alpha1.HTTPOutput) {
-		output.TLSConfig = telemetryv1alpha1.TLSConfig{}
+		output.TLSConfig = telemetryv1alpha1.TLSConfig{
+			Disabled:                  true,
+			SkipCertificateValidation: true,
+		}
 	}
 }
 
