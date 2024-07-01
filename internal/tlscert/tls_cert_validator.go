@@ -129,9 +129,9 @@ func (v *Validator) Validate(ctx context.Context, tls TLSBundle) error {
 	var parsedCAs []*x509.Certificate
 	if sanitizedCA != nil {
 		parsedCAs, err = parseCertificates(sanitizedCA, ErrCADecodeFailed, ErrCAParseFailed)
-	}
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
 	}
 
 	// Validate certificate (if not missing)
