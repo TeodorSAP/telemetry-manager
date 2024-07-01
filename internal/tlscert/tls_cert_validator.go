@@ -43,10 +43,6 @@ type TLSBundle struct {
 	CA   *telemetryv1alpha1.ValueType
 }
 
-func (b *TLSBundle) GetMissing() (bool, bool, bool) {
-	return b.Cert == nil, b.Key == nil, b.CA == nil
-}
-
 const twoWeeks = time.Hour * 24 * 7 * 2
 
 const (
