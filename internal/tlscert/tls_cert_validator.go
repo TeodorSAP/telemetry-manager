@@ -121,13 +121,11 @@ func (v *Validator) Validate(ctx context.Context, tls TLSBundle) error {
 			return err
 		}
 	}
-
 	if sanitizedKey != nil {
 		if err := parsePrivateKey(sanitizedKey); err != nil {
 			return err
 		}
 	}
-
 	var parsedCAs []*x509.Certificate
 	if sanitizedCA != nil {
 		parsedCAs, err = parseCertificates(sanitizedCA, ErrCADecodeFailed, ErrCAParseFailed)
